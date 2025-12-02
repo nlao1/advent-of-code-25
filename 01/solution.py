@@ -40,6 +40,7 @@ def part1(turns: list[tuple[str, int]]) -> int:
 def part2(turns: list[tuple[str, int]]) -> int:
     pos = 50
     sum = 0
+    next_pos = 0
     for dir, amt in turns:
         hundreds, remainder = amt // 100, amt % 100
         sum += hundreds
