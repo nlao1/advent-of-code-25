@@ -2,3 +2,11 @@ project-includes = [
     "**/*.py*",
     "**/*.ipynb",
 ]
+
+[tool.pyrefly]
+search_path = [
+    "**/*"
+]
+
+python-platform = "linux"
+python-version = "3.12"
