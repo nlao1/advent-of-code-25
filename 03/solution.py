@@ -7,10 +7,10 @@ example: str = """987654321111111
 
 
 def parse(s: list[str]):
-    return [line.strip() for line in s]
+    return [[int(x) for x in line.strip()] for line in s]
 
 
-def part1(banks: list[str]):
+def part1(banks: list[list[int]]):
     def max_joltage(bank: list[int]):
         max_start_battery: Optional[int] = None
         curr_max_joltage: Optional[int] = None
@@ -27,7 +27,7 @@ def part1(banks: list[str]):
     return sum(max_joltage([int(x) for x in bank]) for bank in banks)
 
 
-def part2(banks: list[str]):
+def part2(banks: list[list[int]]):
     def max_joltage(bank: list[int], necessary_remaining):
         # i think this has optimal substructure
         # find the leftmost max number that leaves at least `necessary_remaining`,
@@ -45,7 +45,7 @@ def part2(banks: list[str]):
             bank[curr_max_index + 1 :], necessary_remaining - 1
         )
 
-    return sum(max_joltage([int(x) for x in bank], 12) for bank in banks)
+    return sum(max_joltage(bank, 12) for bank in banks)
 
 
 example_input = parse(example.splitlines())
