@@ -1,5 +1,16 @@
 from typing import *
 
+ADJACENT_OFFSETS = [
+    (1, 0),
+    (1, 1),
+    (0, 1),
+    (-1, 1),
+    (-1, 0),
+    (-1, -1),
+    (0, -1),
+    (1, -1),
+]
+
 example: str = """..@@.@@@@.
 @@@.@.@.@@
 @@@@@.@.@@
@@ -11,16 +22,6 @@ example: str = """..@@.@@@@.
 .@@@@@@@@.
 @.@.@@@.@.
 """
-adjacent_offsets = [
-    (1, 0),
-    (1, 1),
-    (0, 1),
-    (-1, 1),
-    (-1, 0),
-    (-1, -1),
-    (0, -1),
-    (1, -1),
-]
 
 
 def accessible_rolls(grid: list[str] | list[list[str]]):
@@ -33,7 +34,7 @@ def accessible_rolls(grid: list[str] | list[list[str]]):
         if grid[row_idx][col_idx] != "@":
             return 0
         num_rolls_in_adjacent_squares = 0
-        for row_offset, col_offset in adjacent_offsets:
+        for row_offset, col_offset in ADJACENT_OFFSETS:
             adjacent_row = row_idx + row_offset
             adjacent_col = col_idx + col_offset
 
