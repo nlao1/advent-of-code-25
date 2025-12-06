@@ -1,6 +1,5 @@
 from typing import *
 from functools import reduce
-from itertools import pairwise
 
 example: str = """123 328  51 64 
  45 64  387 23 
@@ -45,18 +44,15 @@ def part2(s: list[str]):
         i for i in range(len(operator_line)) if operator_line[i] != " "
     ]
     num_cols = len(column_start_idxs)
-    column_start_and_end_indices: list[tuple[int, Optional[int]]] = [
-        (start_col, next_start_col - 1)
-        for start_col, next_start_col in pairwise(column_start_idxs)
-    ]
 
     def get_column_spaces_preserved(line, col_idx):
         if col_idx == num_cols - 1:
             column_start = column_start_idxs[col_idx]
             return line[column_start:]
         else:
-            column_start, column_end = column_start_and_end_indices[col_idx]
-            return line[column_start:column_end]
+            column_start = column_start_idxs[col_idx]
+            next_column_start = column_start_idxs[col_idx + 1]
+            return line[column_start : next_column_start - 1]
 
     # maps the rows of strings to list of columns
     unparsed_number_cols: list[list[str]] = [[] for _ in range(num_cols)]
