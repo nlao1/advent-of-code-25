@@ -60,11 +60,13 @@ def part2(s: list[str]):
             get_column_spaces_preserved(line, col_idx) for line in number_lines
         ]
         col_width = len(lines_for_col[0])
-        numbers = [
-            "".join([line[idx_in_col] for line in lines_for_col])
-            for idx_in_col in range(col_width)
-        ]
-        parsed_numbers_in_cols.append([int(num) for num in numbers])
+        numbers = []
+        for idx_in_col in range(col_width):
+            vertical_slice: list[str] = [
+                line[idx_in_col] for line in lines_for_col
+            ]  # length 1 strings
+            numbers.append(int("".join(vertical_slice)))
+        parsed_numbers_in_cols.append(numbers)
     return calculate(parsed_numbers_in_cols, operator_line.split())
 
 
