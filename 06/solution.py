@@ -54,19 +54,14 @@ def part2(s: list[str]):
             next_column_start = column_start_idxs[col_idx + 1]
             return line[column_start : next_column_start - 1]
 
-    # maps the rows of strings to list of columns
-    unparsed_number_cols: list[list[str]] = [[] for _ in range(num_cols)]
-    for number_line in number_lines:
-        for i in range(num_cols):
-            unparsed_number_cols[i].append(get_column_spaces_preserved(number_line, i))
-    # parse numbers
-    parsed_numbers_in_cols = []
-    for col_idx, column_lines in enumerate(unparsed_number_cols):
-        # you could do this in 1 pass but it's easier to understand to parse the
-        # numbers separately from the columns
-        col_width = len(unparsed_number_cols[col_idx][0])
+    parsed_numbers_in_cols: list[list[int]] = []
+    for col_idx in range(num_cols):
+        lines_for_col: list[str] = [
+            get_column_spaces_preserved(line, col_idx) for line in number_lines
+        ]
+        col_width = len(lines_for_col[0])
         numbers = [
-            "".join([line[idx_in_col] for line in column_lines])  # vertical slice
+            "".join([line[idx_in_col] for line in lines_for_col])
             for idx_in_col in range(col_width)
         ]
         parsed_numbers_in_cols.append([int(num) for num in numbers])
