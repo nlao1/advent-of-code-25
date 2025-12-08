@@ -60,12 +60,11 @@ def part2(rows: list[str]):
         next_running_cols = running_cols.copy()
         while (splitter_idx := row.find("^", splitter_idx + 1)) != -1:
             if splitter_idx in running_cols:
-                amount = running_cols[splitter_idx]
-                next_running_cols[splitter_idx - 1] += amount
-                next_running_cols[splitter_idx + 1] += amount
-                next_running_cols[splitter_idx] -= amount
-        if len(next_running_cols) != 0:
-            running_cols = next_running_cols
+                num_paths = running_cols[splitter_idx]
+                next_running_cols[splitter_idx - 1] += num_paths
+                next_running_cols[splitter_idx + 1] += num_paths
+                next_running_cols[splitter_idx] -= num_paths
+        running_cols = next_running_cols
     return sum(running_cols.values())
 
 
