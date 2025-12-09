@@ -1,6 +1,7 @@
 from typing import *
 import math
 from itertools import combinations
+from collections import defaultdict
 
 
 example: str = """162,817,812
@@ -65,7 +66,6 @@ def parse(s: list[str]):
 
 
 def part1(points: list[tuple[int, int, int]], *, connect_n_closest):
-    graph = {point: set() for point in points}
     point_pairs = list(combinations(points, 2))
     uf = DisjointSet(points)
 
@@ -75,27 +75,11 @@ def part1(points: list[tuple[int, int, int]], *, connect_n_closest):
     )[:connect_n_closest]:
         if uf.find(point1) != uf.find(point2):
             uf.union(point1, point2)
-            graph[point1].add(point2)
-            graph[point2].add(point1)
-
-    # dfs for tree sizes
-    discovered = set()
-
-    def subtree_size(graph, point):
-        discovered.add(point)
-        size = 1
-        for neighbor in graph[point]:
-            if not neighbor in discovered:
-                discovered.add(neighbor)
-                size += subtree_size(graph, neighbor)
-        return size
-
-    tree_sizes = []
+    sizes = defaultdict(int)
     for point in points:
-        if not point in discovered:
-            tree_sizes.append(subtree_size(graph, point))
-    tree_sizes.sort(reverse=True)
-    return tree_sizes[0] * tree_sizes[1] * tree_sizes[2]
+        sizes[uf.find(point)] += 1
+    sizes_sorted = sorted(sizes.values())
+    return sizes_sorted[-1] * sizes_sorted[-2] * sizes_sorted[-3]
 
 
 def part2(points: list[tuple[int, int, int]]):
