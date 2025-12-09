@@ -26,29 +26,24 @@ example: str = """162,817,812
 """
 
 
-def euclidean_distance(p1: tuple[int, int, int], p2: tuple[int, int, int]):
-    return math.sqrt((p1[2] - p2[2]) ** 2 + (p1[1] - p2[1]) ** 2 + (p1[0] - p2[0]) ** 2)
-
-
 class DisjointSet:
     """
     Disjoint set with union by rank and path compression. Union by size would
-    have been better but I don't know how it works
+    have been better but I don't know how it works.
     """
 
-    def __init__(self, points):
-        self.n = len(points)
-        self.ranks = {point: 0 for point in points}
-        self.parents = {point: point for point in points}
+    def __init__(self, nodes):
+        self.ranks = {point: 0 for point in nodes}
+        self.parents = {point: point for point in nodes}
 
-    def find(self, n):
-        if n != self.parents[n]:
-            self.parents[n] = self.find(self.parents[n])
-        return self.parents[n]
+    def find(self, node):
+        if node != self.parents[node]:
+            self.parents[node] = self.find(self.parents[node])
+        return self.parents[node]
 
-    def union(self, n1, n2):
-        parent1 = self.find(n1)
-        parent2 = self.find(n2)
+    def union(self, node1, node2):
+        parent1 = self.find(node1)
+        parent2 = self.find(node2)
         rank1 = self.ranks[parent1]
         rank2 = self.ranks[parent2]
         if parent1 == parent2:
@@ -75,13 +70,15 @@ def part1(points: list[tuple[int, int, int]], *, connect_n_closest):
     uf = DisjointSet(points)
 
     for point1, point2 in sorted(
-        point_pairs, key=lambda pair: euclidean_distance(pair[0], pair[1])
+        point_pairs,
+        key=lambda pair: math.dist(pair[0], pair[1]),
     )[:connect_n_closest]:
         if uf.find(point1) != uf.find(point2):
             uf.union(point1, point2)
             graph[point1].add(point2)
             graph[point2].add(point1)
 
+    # dfs for tree sizes
     discovered = set()
 
     def subtree_size(graph, point):
@@ -97,10 +94,8 @@ def part1(points: list[tuple[int, int, int]], *, connect_n_closest):
     for point in points:
         if not point in discovered:
             tree_sizes.append(subtree_size(graph, point))
-    tree_sizes_descending = sorted(tree_sizes, reverse=True)
-    return (
-        tree_sizes_descending[0] * tree_sizes_descending[1] * tree_sizes_descending[2]
-    )
+    tree_sizes.sort(reverse=True)
+    return tree_sizes[0] * tree_sizes[1] * tree_sizes[2]
 
 
 def part2(points: list[tuple[int, int, int]]):
@@ -109,7 +104,7 @@ def part2(points: list[tuple[int, int, int]]):
 
     num_connected = 0
     for point1, point2 in sorted(
-        point_pairs, key=lambda pair: euclidean_distance(pair[0], pair[1])
+        point_pairs, key=lambda pair: math.dist(pair[0], pair[1])
     ):
         if uf.find(point1) != uf.find(point2):
             uf.union(point1, point2)
