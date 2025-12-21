@@ -44,3 +44,8 @@ def num_paths(graph, start, end):
 
 
 print(num_paths(graph, "you", "out"))
+print(
+    num_paths(graph, "svr", "fft")
+    * num_paths(graph, "fft", "dac")
+    * num_paths(graph, "dac", "out")
+)
