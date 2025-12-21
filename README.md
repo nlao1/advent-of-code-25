@@ -18,3 +18,7 @@ Part 2 is a weird geometry problem... Why
 I can't believe there's an NP hard problem here! I wonder if bidirectional BFS
 with a smart branch-and-bound would have been enough. Using a constraint solver
 felt like cheating here.
+
+## Day 12
+
+Interesting how the code needed to solve it was shorter than the parsing itself
