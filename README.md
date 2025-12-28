@@ -22,3 +22,8 @@ felt like cheating here.
 ## Day 12
 
 Interesting how the code needed to solve it was shorter than the parsing itself
+
+
+# Note
+
+I did these roughly when they came out but had to reset the author because of git email config
